@@ -16,6 +16,7 @@ return new class extends Migration
                 ->constrained(app(\App\Models\Language::class)->getTable())
                 ->onDelete('cascade');
             $table->timestamps();
+            $table->softDeletes();
 
             // Make combination of key and language_id unique
             $table->unique(['key', 'language_id']);
