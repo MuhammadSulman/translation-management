@@ -12,13 +12,13 @@ Route::middleware('auth:sanctum')
 
 Route::post('/login', [AuthController::class, 'login']);
 
-// Route::middleware('auth:sanctum')
-//     ->group(
-//         static function () {
+ Route::middleware('auth:sanctum')
+     ->group(
+         static function () {
             Route::post('/logout', [AuthController::class, 'logout']);
             Route::apiResource('languages', LanguageController::class);
             Route::get('translations/export', [TranslationController::class, 'export']);
             Route::apiResource('translations', TranslationController::class);
-    //     }
-    // );
+         }
+     );
 

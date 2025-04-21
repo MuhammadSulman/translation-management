@@ -10,14 +10,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Translation extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
+    use SoftDeletes;
 
     protected $fillable = [
         'key',
         'value',
         'language_id',
-        'namespace',
-        'group'
     ];
 
     /**
@@ -33,7 +32,11 @@ class Translation extends Model
      */
     public function tags(): BelongsToMany
     {
-        return $this->belongsToMany(Tag::class, 'translation_tag');
+        return $this
+            ->belongsToMany(
+                Tag::class,
+                'translation_tag'
+            );
     }
 
     /**

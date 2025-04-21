@@ -2,13 +2,13 @@
 
 namespace App\Services;
 
+use App\Contracts\TranslationSearchContract;
 use App\Models\Translation;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 
-class TranslationSearchService
+class TranslationSearchService implements TranslationSearchContract
 {
     public function search(Request $request): LengthAwarePaginator
     {
@@ -30,11 +30,6 @@ class TranslationSearchService
         $this->applyTagFilter($query, $request);
         $this->applyKeyFilter($query, $request);
         $this->applyContentFilter($query, $request);
-
-        // Add index hints for MySQL if appropriate
-        if (DB::connection()->getDriverName() === 'mysql') {
-            $query->from(DB::raw('`translations` USE INDEX(translations_language_id_index)'));
-        }
 
         // Return paginated results with efficient count query
         return $query->paginate(
@@ -59,8 +54,8 @@ class TranslationSearchService
 
             // Use join instead of whereHas for better performance with large datasets
             $query->join('translation_tag', 'translations.id', '=', 'translation_tag.translation_id')
-                  ->where('translation_tag.tag_id', $tagId)
-                  ->distinct('translations.id'); // Prevent duplicate rows
+                ->where('translation_tag.tag_id', $tagId)
+                ->distinct('translations.id'); // Prevent duplicate rows
         }
     }
 

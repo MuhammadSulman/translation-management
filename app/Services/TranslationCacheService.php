@@ -2,11 +2,11 @@
 
 namespace App\Services;
 
+use App\Contracts\TranslationCacheContract;
 use App\Models\Translation;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Cache;
 
-class TranslationCacheService
+class TranslationCacheService implements TranslationCacheContract
 {
     /**
      * Cache time in seconds (20 minutes)
@@ -56,7 +56,7 @@ class TranslationCacheService
     /**
      * Generate a cache key based on the language and tag filters
      */
-    protected function generateCacheKey(array $languages, array $tags): string
+    public function generateCacheKey(array $languages, array $tags): string
     {
         $key = 'translations';
 
@@ -83,7 +83,7 @@ class TranslationCacheService
     /**
      * Fetch translations from database and format them
      */
-    protected function fetchTranslationsFromDatabase(array $languages, array $tags): array
+    public function fetchTranslationsFromDatabase(array $languages, array $tags): array
     {
         $query = Translation::with('language');
 

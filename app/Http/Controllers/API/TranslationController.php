@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Contracts\TranslationCacheContract;
+use App\Contracts\TranslationSearchContract;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TranslationRequest;
 use App\Http\Resources\TranslationResource;
 use App\Models\Translation;
-use App\Services\TranslationCacheService;
-use App\Services\TranslationSearchService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -15,8 +15,8 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 class TranslationController extends Controller
 {
     public function __construct(
-        private TranslationSearchService $searchService,
-        private TranslationCacheService $cacheService
+        private TranslationSearchContract $searchService,
+        private TranslationCacheContract $cacheService
     )
     {
     }
