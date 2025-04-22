@@ -4,13 +4,9 @@ namespace Tests\Unit\Http\Controllers;
 
 use App\Contracts\TranslationCacheContract;
 use App\Contracts\TranslationSearchContract;
-use App\Http\Controllers\API\TranslationController;
 use Illuminate\Http\Request;
-use Illuminate\Contracts\Routing\ResponseFactory;
-use Illuminate\Support\Facades\Response;
 use Mockery;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class TranslationControllerUnitTest extends TestCase
 {

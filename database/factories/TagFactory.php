@@ -22,7 +22,7 @@ class TagFactory extends Factory
     {
         return [
             // Define the data to be used when generating a new Tag instance
-            'name' => $this->faker->word,  // Generates a random word as the tag name
+            'name' => $this->faker->word . '_' . $this->faker->unique()->uuid,  // Ensures unique tag names for any volume
         ];
     }
 }
