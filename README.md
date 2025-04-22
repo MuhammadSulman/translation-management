@@ -69,52 +69,48 @@ This is a Laravel-based backend for a translation management system. It provides
    ```
 	## Installation
 
-### Schedule Setup
-
-To enable automatic news fetching, add the Laravel scheduler to your crontab:
-
-```bash
-* * * * * cd /path-to-your-project && php artisan schedule:run >> /dev/null 2>&1
-```
-
-Alternatively, you can manually run the fetch commands:
-
-```bash
-# Fetch trending news
-php artisan news:fetch trending
-
-# Fetch yesterday's news
-php artisan news:fetch yesterday
-```
-
 ## Architecture
 
-The application uses several design patterns to ensure flexibility and scalability:
+This application is built with Laravel and follows a service-oriented and RESTful architecture:
 
-- **Strategy Pattern**: Each news source implements a common interface.
-- **Factory Pattern**: Creates news source instances.
-- **Adapter Pattern**: Standardizes different API responses.
-- **Repository Pattern**: For data access and filtering.
-- **Command Pattern**: For scheduled tasks.
+- **Service Layer**: Business logic for searching and caching translations is handled by dedicated services (`TranslationSearchService`, `TranslationCacheService`).
+- **Contracts/Repository Pattern**: Interfaces define expected behaviors for search and cache, making logic easily swappable.
+- **Resource Classes**: API responses are formatted via Laravel Resources (`TranslationResource`, `LanguageResource`, `TagResource`).
+- **Authentication**: Laravel Sanctum provides secure API token authentication for all endpoints.
+- **RESTful Controllers**: CRUD operations are handled using Laravel's `apiResource` controllers.
+- **Factory Usage**: Laravel model factories are used for efficient and unique test data generation.
 
-This architecture makes it easy to add new sources without modifying existing code.
-
-## Adding a New News Source
-
-To add a new news source:
-
-    1. Create a new class in `app/Services/NewsAggregator` that extends `AbstractNewsSource`.
-    2. Implement the required methods (`fetchTrending`, `fetchYesterday`, `mapToArticleModel`, `getSourceIdentifier`).
-    3. Add the new source to the `NewsSourceFactory`.
-    4. Add the API key configuration to `config/news_sources.php`.
+This architecture ensures scalability, maintainability, and clean separation of concerns for translation management workflows.
 
 ## API Endpoints
 
+### Authentication
+| Endpoint | Description |
+|----------|-------------|
+| `POST /api/login` | Login and receive a token |
+| `POST /api/logout` | Logout (requires authentication) |
+
+### Languages
+| Endpoint | Description |
+|----------|-------------|
+| `GET /api/languages` | List all languages |
+| `POST /api/languages` | Create a new language |
+| `GET /api/languages/{id}` | Get a specific language |
+| `PUT /api/languages/{id}` | Update a language |
+| `DELETE /api/languages/{id}` | Delete a language |
+
+### Translations
 | Endpoint | Description | Query Parameters |
 |----------|-------------|------------------|
-| `GET /api/news` | Get articles with filters | search, source, category, date_from, date_to, per_page |
-| `GET /api/news/categories` | Get available categories | None |
-| `GET /api/news/sources` | Get available sources | None |
+| `GET /api/translations` | List translations | `language_id`, `tags[]`, `search`, `per_page`, `page` |
+| `POST /api/translations` | Create a new translation | — |
+| `GET /api/translations/{id}` | Get a specific translation | — |
+| `PUT /api/translations/{id}` | Update a translation | — |
+| `DELETE /api/translations/{id}` | Delete a translation | — |
+| `GET /api/translations/export` | Export translations (filtered) | `languages[]`, `tags[]` |
+
+All endpoints (except login) require authentication via Laravel Sanctum.
+
 
 ## API Documentation
 

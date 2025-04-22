@@ -122,7 +122,7 @@ class AuthControllerUnitTest extends TestCase
 
         // Assert that the response is correct
         $this->assertEquals(200, $response->getStatusCode());
-        $this->assertEquals(['message' => 'Logged out'], json_decode($response->getContent(), true));
+        $this->assertEquals(['message' => 'Logged out successfully'], json_decode($response->getContent(), true));
     }
 
     public function testLogoutUnauthenticated()

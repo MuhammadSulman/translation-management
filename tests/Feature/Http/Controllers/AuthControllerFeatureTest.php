@@ -77,7 +77,7 @@ class AuthControllerFeatureTest extends TestCase
 
         // Assert successful logout
         $response->assertStatus(200)
-            ->assertJson(['message' => 'Logged out']);
+            ->assertJson(['message' => 'Logged out successfully']);
 
         // Verify token was deleted by attempting to access a protected route
         $this->assertCount(0, $user->tokens);
