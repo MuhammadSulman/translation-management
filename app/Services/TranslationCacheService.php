@@ -60,19 +60,19 @@ class TranslationCacheService implements TranslationCacheContract
     {
         $key = 'translations';
 
-        if (!empty($languages)) {
+        if (!blank($languages)) {
             sort($languages);
             $key .= '_lang_' . implode('_', $languages);
         }
 
-        if (!empty($tags)) {
+        if (!blank($tags)) {
             sort($tags);
             $key .= '_tag_' . implode('_', $tags);
         }
 
         // Store this key in the list of translation cache keys
         $cacheKeys = Cache::get('translation_cache_keys', []);
-        if (!in_array($key, $cacheKeys)) {
+        if (!in_array($key, $cacheKeys, true)) {
             $cacheKeys[] = $key;
             Cache::put('translation_cache_keys', $cacheKeys, self::CACHE_TTL);
         }
@@ -87,11 +87,11 @@ class TranslationCacheService implements TranslationCacheContract
     {
         $query = Translation::with('language');
 
-        if (!empty($languages)) {
+        if (!blank($languages)) {
             $query->whereIn('language_id', $languages);
         }
 
-        if (!empty($tags)) {
+        if (!blank($tags)) {
             $query->whereHas('tags', function ($q) use ($tags) {
                 $q->whereIn('tags.id', $tags);
             });

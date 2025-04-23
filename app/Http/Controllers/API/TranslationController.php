@@ -195,7 +195,7 @@ class TranslationController extends Controller
 
         // Stream the JSON response
         return response()->streamDownload(function () use ($translations) {
-            echo json_encode($translations, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+            echo json_encode($translations, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
         }, $filename, [
             'Content-Type' => 'application/json',
             'Content-Disposition' => 'attachment; filename="' . $filename . '"',
